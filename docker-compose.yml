@@ -1,0 +1,67 @@
+services:
+  control:
+    build: ./control
+    container_name: control
+    hostname: control
+    volumes:
+      - ./inventory:/home/ansible/inventory
+      - ./playbooks:/home/ansible/playbooks
+      - ./template:/home/ansible/template
+    networks:
+      - ansible_net
+    depends_on:
+      - node1
+      - node2
+  node1:
+    build: ./nodes
+    container_name: node1
+    hostname: node1
+    expose:
+      - "22"
+    networks:
+      - ansible_net
+    tty: true
+  
+  node2:
+    build: ./nodes
+    container_name: node2
+    hostname: node2
+    expose:
+      - "22"
+    networks:
+      - ansible_net
+    tty: true
+
+  node3:
+    build: ./nodes
+    container_name: node3
+    hostname: node3
+    expose:
+      - "22"
+    networks:
+      - ansible_net
+    tty: true
+
+  node4:
+    build: ./nodes
+    container_name: node4
+    hostname: node4
+    expose:
+      - "22"
+    networks:
+      - ansible_net
+    tty: true
+
+  node5:
+    build: ./nodes
+    container_name: node5
+    hostname: node5
+    expose:
+      - "22"
+    networks:
+      - ansible_net
+    tty: true
+
+networks:
+  ansible_net:
+    driver: bridge

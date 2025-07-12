@@ -1,0 +1,45 @@
+---
+- name: Setup SSH Access
+  hosts: localhost
+  # gather_facts: false
+  tasks:
+    - name: Validar que Directory .ssh existe
+      file:
+        path: "~/.ssh"
+        state: directory
+        mode: '0700'
+      
+    - name: Generate SSH key if not exists
+      command: ssh-keygen -t rsa -b 4096 -f /home/ansible/.ssh/id_rsa -N ""
+      args:
+        creates: "~/.ssh/id_rsa"
+
+      # local_action: >
+      #   command ssh-keygen -t rsa -b 4096 -f /home/ansible/.ssh/id_rsa -N ""
+      # run_once: true
+      # ignore_errors: true
+
+- name: Copy Key Public a Managed Nodes
+  hosts: nodes
+  become: true
+  vars:
+    ansible_user: ansible
+  tasks:
+    - name: Create Directory .ssh if not exists
+      file:
+        path: /home/ansible/.ssh
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: '0700'
+    
+    - name: Add Key-Public authorized
+      authorized_key:
+        user: ansible
+        state: present
+        key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+      # ansible.posix.authorized_keys:
+      #   user: ansible
+      #   state: present
+      #   key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+
