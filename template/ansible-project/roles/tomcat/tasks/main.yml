@@ -1,3 +1,66 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for tomcat
+
+- name: Install Java (OpenJDK)
+  apt:
+    name: openjdk-11-jdk
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Create tomcat group
+  group:
+    name: tomcat
+
+- name: Create tomcat user
+  user:
+    name: tomcat
+    shell: /bin/false
+    group: tomcat
+    home: /opt/tomcat
+    create_home: no
+
+- name: Download Tomcat
+  get_url:
+    url: "{{ tomcat_download_url }}"
+    dest: /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz
+
+- name: Extract Tomcat
+  unarchive:
+    src: /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz
+    dest: /opt/
+    remote_src: yes
+
+- name: Create symlink to tomcat directory
+  file:
+    src: /opt/apache-tomcat-{{ tomcat_version }}
+    dest: /opt/tomcat
+    state: link
+
+# - name: Rename tomcat directory
+#   command: mv /opt/apache-tomcat-{{ tomcat_version }} /opt/tomcat
+#   args:
+#     creates: /opt/tomcat
+
+- name: Set permissions
+  file:
+    path: /opt/tomcat
+    state: directory
+    owner: tomcat
+    group: tomcat
+    recurse: yes
+
+- name: Copy Tomcat systemd service file
+  template:
+    src: tomcat.service.j2
+    dest: /etc/systemd/system/tomcat.service
+    mode: '0644'
+
+- name: Start Tomcat
+  command: /opt/tomcat/bin/startup.sh
+
+# - name: Enable and start Tomcat
+#   systemd:
+#     name: tomcat
+#     enabled: yes
+#     state: started

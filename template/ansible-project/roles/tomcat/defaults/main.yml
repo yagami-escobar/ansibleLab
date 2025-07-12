@@ -1,3 +1,5 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # defaults file for tomcat
+tomcat_version: 9.0.82
+tomcat_download_url: "https://archive.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"

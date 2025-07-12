@@ -1,0 +1,7 @@
+# playbooks/deploy_tomcat.yml
+- name: Deploy JDK and Apache Tomcat
+  hosts: webservers
+  become: yes
+
+  roles:
+    - role: tomcat
