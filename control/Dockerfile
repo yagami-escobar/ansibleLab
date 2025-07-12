@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=nointeractive
 
 RUN apt-get update && \
-    apt-get install -y tzdata python3 python3-pip openssh-client sshpass ansible && \
+    apt-get install -y tzdata vim python3 python3-pip openssh-client sshpass ansible && \
     apt-get install -y curl iputils-ping net-tools iproute2 tree && \
     apt-get clean
 

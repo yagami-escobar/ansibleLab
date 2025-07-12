@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 # Install Pkgs
 RUN apt-get update && \
-    apt-get install -y openssh-server sudo curl iputils-ping net-tools iproute2 tree && \
+    apt-get install -y openssh-server vim sudo curl iputils-ping net-tools iproute2 tree && \
     apt-get clean
 
 # User, Config
