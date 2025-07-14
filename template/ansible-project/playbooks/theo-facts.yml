@@ -1,0 +1,8 @@
+---
+- name: Config Segun Osx
+  package:
+    name: {{ "httpd" if ansible_os_family == 'RedHat' else 'apache2' }}
+    state: present
+- name: Show System Info
+  debug:
+    msg: "Este es {{ ansible_hostname }} with {{ ansible_memtotal_mb }}MB de RAM"

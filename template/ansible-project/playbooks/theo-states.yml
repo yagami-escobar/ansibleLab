@@ -1,0 +1,41 @@
+---
+# PACKAGES:
+- name: Install NGINX [si no esta]
+  apt:
+    name: nginx
+    state: present
+- name: Update NGINX [latest]
+  apt:
+    name: nginx
+    state: latest
+- name: Remove Nginx [completly]
+  apt:
+    name: nginx
+    state: absent
+    purge: yes
+
+# SERVICES:
+- name: Valid NGINX [que este ejecutandose]
+  services:
+    name: nginx
+    state: present
+    enabled: yes
+- name: Reload NGINX [si hay cambios]
+  services:
+    name: nginx
+    state: restarted
+
+# FILES/DIRECTORYS
+- name: Create Dir LOGS
+  file:
+    path: /var/log/myapp
+    state: directory
+    owner: app
+    group: app
+- name: Delete File TMP
+  file:
+    path: /tmp/install.sh
+    state: absent
+# - name: show vars
+#   debug:
+#     msg: "deploy {{ app_name }} version {{ app_version }}"

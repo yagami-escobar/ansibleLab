@@ -1,0 +1,10 @@
+database:
+  host: db.empresa.com
+  name: personas
+  user: yagami
+
+http_port: 80
+https_port: 443
+env: "staging"
+ssl_certificate: /etc/ssl/certs/empresa.crt
+ssl_key: /etc/ssl/private/empresa.key

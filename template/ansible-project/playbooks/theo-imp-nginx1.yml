@@ -1,0 +1,51 @@
+---
+- name: Config Nginx WebServer
+  hosts: webservers
+  become: yes
+  gather_facts: yes
+  vars:
+    nginx_port: 80
+    document_root: /var/www/html
+  vars_files:
+    - vars/main.yml
+    - vars/secrets.yml
+  tasks:
+    - name: Update Cache Pkgs
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create Dir Web Content
+      file:
+        path: "{{ document_root }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Copy Custom Web
+      copy:
+        content: |
+          Server Config NGINX!
+        dest: "{{ document_root }}/index.html"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify: restart_nginx
+
+    - name: Check Nginx Init
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: restart_nginx
+      service:
+        name: nginx
+        state: restarted

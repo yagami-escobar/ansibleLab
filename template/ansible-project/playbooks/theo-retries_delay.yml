@@ -1,0 +1,20 @@
+---
+# RETRIES && DELAYS:
+  - name: download file with retries
+    get_url:
+      url: https://domain/file.tar.gz
+      dest: /tmp/file.tar.gz
+    retries: 3
+    delay: 5 # wait 5s between retries
+  - name: wait nginx este Ready
+    uri:
+      url: http://localhost:80
+      method: GET
+    register: nginx_status
+    until: nginx_status.status == 200
+    retires: 10
+    delay: 3
+  - name: wait file ready
+    wait_for:
+      path: /var/run/app.pid
+      timeout: 60

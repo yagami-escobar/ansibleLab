@@ -1,0 +1,31 @@
+---
+# WHEN
+- name: Conditionals [WHEN]
+  hosts: all
+  tasks:
+    - name: install apache in ubuntu
+      apt:
+        name: apache2
+        state: present
+      when: ansible_distribution == "Ubuntu"
+    - name: install apache in redhat
+      apt:
+        name: httpd
+        state: present
+      when: ansible_distribution == "RedHat"
+    - name: config ubuntu para prod
+      template:
+        src: nginx_prod.conf.j2
+        dest: /etc/nginx/nginx.conf
+      when:
+        - ansible_distribution == "Ubuntu"
+        - environment == "production"
+    - name: check nginx install
+      command: which nginx
+      register: nginx_check
+      ignore_erros: yes
+    - name: config nginx [yes install]
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      when: nginx_check.rc == 0
