@@ -15,7 +15,7 @@ RUN mkdir /var/run/sshd && \
     chmod 700 /home/ansible/.ssh && \
     chmod 600 /home/ansible/.ssh/authorized_keys && \
     chsh -s /bin/bash ansible && \
-    echo 'ansible ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    echo 'ansible ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

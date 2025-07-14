@@ -1,0 +1,58 @@
+---
+
+- name: Instalación y configuración básica de MySQL sin community.mysql
+  hosts: localhost
+  become: true
+  connection: local
+  vars_files:
+    - ../vars_mysql.yml
+
+  tasks:
+    - name: Instalar MySQL Server
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: true
+
+    - name: Asegurar que MySQL está activo
+      service:
+        name: mysql
+        state: started
+        enabled: true
+
+    - name: Establecer contraseña de root (si es necesario)
+      shell: |
+        mysql -u root <<EOF
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ mysql_root_password }}';
+        FLUSH PRIVILEGES;
+        EOF
+      args:
+        executable: /bin/bash
+
+    - name: Crear base de datos
+      shell: |
+        mysql -u root -p{{ mysql_root_password }} -e "CREATE DATABASE IF NOT EXISTS {{ db_name }};"
+      args:
+        executable: /bin/bash
+
+    - name: Crear usuario externo y asignar permisos
+      shell: |
+        mysql -u root -p{{ mysql_root_password }} <<EOF
+        CREATE USER IF NOT EXISTS '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_user_password }}';
+        GRANT ALL PRIVILEGES ON {{ db_name }}.* TO '{{ db_user }}'@'%';
+        FLUSH PRIVILEGES;
+        EOF
+      args:
+        executable: /bin/bash
+
+    - name: Permitir conexiones externas (bind-address = 0.0.0.0)
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: "bind-address = 0.0.0.0"
+        backup: yes
+
+    - name: Reiniciar MySQL
+      service:
+        name: mysql
+        state: restarted
