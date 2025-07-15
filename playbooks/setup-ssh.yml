@@ -1,6 +1,8 @@
 ---
 - name: Setup SSH Access
   hosts: localhost
+  remote_user: ansible
+  become: false
   # gather_facts: false
   tasks:
     - name: Validar que Directory .ssh existe

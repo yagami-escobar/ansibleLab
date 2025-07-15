@@ -7,11 +7,15 @@ services:
       - ./inventory:/home/ansible/inventory
       - ./playbooks:/home/ansible/playbooks
       - ./template:/home/ansible/template
+      - ./template/ansible-project/ansible.cfg:/home/ansible/ansible.cfg
     networks:
       - ansible_net
     depends_on:
       - node1
       - node2
+      - node3
+      - node4
+      - node5
   node1:
     build: ./nodes
     container_name: node1
