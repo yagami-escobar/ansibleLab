@@ -1,0 +1,111 @@
+---
+- name: Despliegue Multi-tier E-commerce
+  hosts: localhost
+  gather_facts: false
+  vars:
+    app_version: "v1.2.3"
+    db_name: "ecommerce_db"
+    
+  tasks:
+    - name: Crear inventario dinámico
+      add_host:
+        name: "{{ item.name }}"
+        groups: "{{ item.group }}"
+        ansible_host: "{{ item.ip }}"
+      loop:
+        - { name: "db-server", group: "database", ip: "10.0.1.10" }
+        - { name: "api-server-1", group: "backend", ip: "10.0.1.20" }
+        - { name: "api-server-2", group: "backend", ip: "10.0.1.21" }
+        - { name: "web-server-1", group: "frontend", ip: "10.0.1.30" }
+        - { name: "web-server-2", group: "frontend", ip: "10.0.1.31" }
+
+# Fase 1: Preparación de Base de Datos
+- name: Configurar Base de Datos
+  hosts: database
+  serial: 1
+  tasks:
+    - name: Instalar MySQL
+      package:
+        name: mysql-server
+        state: present
+        
+    - name: Crear base de datos
+      mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        
+    - name: Ejecutar migraciones
+      shell: |
+        mysql {{ db_name }} < /tmp/migrations.sql
+      register: migration_result
+      
+    - name: Verificar integridad de datos
+      mysql_query:
+        query: "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{{ db_name }}'"
+        login_db: "{{ db_name }}"
+      register: table_count
+      
+    - name: Validar migración
+      assert:
+        that:
+          - table_count.query_result[0][0] > 0
+        fail_msg: "La migración falló - No se encontraron tablas"
+            
+# Fase 2: Despliegue de Backend (Paralelo)
+- name: Configurar Servidores Backend
+  hosts: backend
+  strategy: free
+  tasks:
+    - name: Instalar Node.js
+      package:
+        name: nodejs
+        state: present
+        
+    - name: Descargar aplicación
+      git:
+        repo: "https://github.com/company/api-server.git"
+        dest: "/opt/api-server"
+        version: "{{ app_version }}"
+        
+    - name: Instalar dependencias
+      npm:
+        path: "/opt/api-server"
+        state: present
+        
+    - name: Configurar variables de entorno
+      template:
+        src: api.env.j2
+        dest: "/opt/api-server/.env"
+      notify: restart api service
+      
+    - name: Crear servicio systemd
+      template:
+        src: api.service.j2
+        dest: "/etc/systemd/system/api.service"
+      notify: 
+        - reload systemd
+        - restart api service
+        
+    - name: Habilitar y iniciar servicio
+      systemd:
+        name: api
+        enabled: yes
+        state: started
+        
+    - name: Verificar health check
+      uri:
+        url: "http://localhost:3000/health"
+        method: GET
+        status_code: 200
+      retries: 5
+      delay: 10
+      
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+        
+    - name: restart api service
+      systemd:
+        name: api
+        state: restarted

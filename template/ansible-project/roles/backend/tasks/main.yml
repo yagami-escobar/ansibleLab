@@ -1,0 +1,69 @@
+---
+# tasks file for roles
+- name: Instalar Node.js y npm
+  apt:
+    name:
+      - nodejs
+      - npm
+    state: present
+    update_cache: yes
+
+- name: Clonar json-server desde GitHub
+  git:
+    repo: "https://github.com/typicode/json-server.git"
+    dest: "/opt/api-server"
+    version: "{{ app_version }}"
+
+- name: Instalar dependencias
+  npm:
+    path: "/opt/api-server"
+    state: present
+
+- name: Crear archivo de datos JSON
+  copy:
+    dest: /opt/api-server/db.json
+    content: |
+      {
+        "products": [
+          { "id": 1, "name": "Chimichanga", "price": 9.99 },
+          { "id": 2, "name": "Katana", "price": 299.99 }
+        ]
+      }
+
+- name: Crear servicio systemd
+  copy:
+    dest: /etc/systemd/system/api.service
+    content: |
+      [Unit]
+      Description=JSON API Server
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/bin/npx json-server --watch /opt/api-server/db.json --port 3000
+      WorkingDirectory=/opt/api-server
+      Restart=always
+      User=root
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Recargar systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Iniciar servicio
+  systemd:
+    name: api
+    state: started
+    enabled: yes
+
+- name: Verificar servicio (modo pro)
+  uri:
+    url: "http://localhost:3000/products"
+    method: GET
+    status_code: 200
+  register: result_uri
+  until: result_uri.status == 200
+  retries: 5
+  delay: 10
+

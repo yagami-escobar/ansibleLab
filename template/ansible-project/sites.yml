@@ -1,0 +1,32 @@
+- name: Despliegue Multi-tier E-commerce
+  hosts: localhost
+  gather_facts: false
+  vars:
+    app_version: "main"
+    db_name: "ecommerce_db"
+    ssh_user: "ansible"
+    #ssh_key: "/home/ansible/.ssh/id_rsa.pub"
+  roles:
+    - inventory_setup
+
+- name: Configurar Base de Datos
+  hosts: database
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    db_name: "ecommerce_db"
+    mysql_root_password: "amalaver123"
+    db_user: "test"
+    db_user_password: "amalaver123*"
+  roles:
+    - database
+
+- name: Configurar Servidores Backend
+  hosts: backend
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    app_version: "main"
+  roles:
+    - backend
+
