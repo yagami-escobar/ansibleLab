@@ -1,0 +1,327 @@
+2025-07-24 22:40:04,455 p=5103 u=ansible n=ansible | ERROR! Empty playbook, nothing to do
+2025-07-24 22:41:52,294 p=5114 u=ansible n=ansible | playbook: playbooks/install-nginx.yml
+2025-07-24 22:42:19,666 p=5118 u=ansible n=ansible |  [ERROR]: User interrupted execution
+
+2025-07-24 22:43:26,368 p=5168 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web2: Failed to connect to the host via ssh: Warning: Permanently added
+'192.168.56.12' (ED25519) to the list of known hosts.  ubuntu@192.168.56.12: Permission denied (publickey,password).
+
+2025-07-24 22:43:26,372 p=5166 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web1: Failed to connect to the host via ssh: Warning: Permanently added
+'192.168.56.11' (ED25519) to the list of known hosts.  ubuntu@192.168.56.11: Permission denied (publickey,password).
+
+2025-07-24 22:43:26,587 p=5164 u=ansible n=ansible | web2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.12\". Make sure this host can be reached over ssh: ubuntu@192.168.56.12: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:43:26,589 p=5164 u=ansible n=ansible | web1 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.11\". Make sure this host can be reached over ssh: ubuntu@192.168.56.11: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:43:38,863 p=5179 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web1: Failed to connect to the host via ssh: ubuntu@192.168.56.11: Permission denied
+(publickey,password).
+
+2025-07-24 22:43:38,868 p=5181 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web2: Failed to connect to the host via ssh: ubuntu@192.168.56.12: Permission denied
+(publickey,password).
+
+2025-07-24 22:43:39,068 p=5177 u=ansible n=ansible | web1 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.11\". Make sure this host can be reached over ssh: ubuntu@192.168.56.11: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:43:39,076 p=5177 u=ansible n=ansible | web2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.12\". Make sure this host can be reached over ssh: ubuntu@192.168.56.12: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:43:46,418 p=5195 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web2: Failed to connect to the host via ssh: ubuntu@192.168.56.12: Permission denied
+(publickey,password).
+
+2025-07-24 22:43:46,420 p=5193 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web1: Failed to connect to the host via ssh: ubuntu@192.168.56.11: Permission denied
+(publickey,password).
+
+2025-07-24 22:43:46,614 p=5191 u=ansible n=ansible | web1 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.11\". Make sure this host can be reached over ssh: ubuntu@192.168.56.11: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:43:46,615 p=5191 u=ansible n=ansible | web2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.12\". Make sure this host can be reached over ssh: ubuntu@192.168.56.12: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:44:22,272 p=5210 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web1: Failed to connect to the host via ssh: ubuntu@192.168.56.11: Permission denied
+(publickey,password).
+
+2025-07-24 22:44:22,277 p=5212 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web2: Failed to connect to the host via ssh: ubuntu@192.168.56.12: Permission denied
+(publickey,password).
+
+2025-07-24 22:44:22,476 p=5208 u=ansible n=ansible | web1 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.11\". Make sure this host can be reached over ssh: ubuntu@192.168.56.11: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:44:22,477 p=5208 u=ansible n=ansible | web2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.12\". Make sure this host can be reached over ssh: ubuntu@192.168.56.12: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:45:03,215 p=5242 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web1: Failed to connect to the host via ssh: ubuntu@192.168.56.11: Permission denied
+(publickey,password).
+
+2025-07-24 22:45:03,234 p=5244 u=ansible n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host web2: Failed to connect to the host via ssh: ubuntu@192.168.56.12: Permission denied
+(publickey,password).
+
+2025-07-24 22:45:03,407 p=5240 u=ansible n=ansible | web1 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.11\". Make sure this host can be reached over ssh: ubuntu@192.168.56.11: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:45:03,447 p=5240 u=ansible n=ansible | web2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Data could not be sent to remote host \"192.168.56.12\". Make sure this host can be reached over ssh: ubuntu@192.168.56.12: Permission denied (publickey,password).\r\n",
+    "unreachable": true
+}
+2025-07-24 22:48:33,202 p=5330 u=ansible n=ansible | playbook: playbooks/install-nginx.yml
+2025-07-24 22:48:42,864 p=5334 u=ansible n=ansible | web2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-07-24 22:48:42,919 p=5334 u=ansible n=ansible | web1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-07-24 22:49:03,616 p=5355 u=ansible n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "web1": {
+                "admin_email": "admin@empresa.com",
+                "admin_users": [
+                    {
+                        "comment": "Usuario DevOps",
+                        "groups": "sudo",
+                        "name": "devops",
+                        "shell": "/bin/bash"
+                    }
+                ],
+                "ansible_host": "192.168.56.11",
+                "ansible_user": "ansible",
+                "company_name": "SFI Networks",
+                "deployment_date": "{{ ansible_date_time.date }}",
+                "document_root": "/var/www/html",
+                "environment_name": "laboratorio",
+                "firewall_enabled": true,
+                "http_port": 80,
+                "https_port": 443,
+                "log_retention_days": 30,
+                "nginx_access_log": "/var/log/nginx/access.log",
+                "nginx_client_max_body_size": "10M",
+                "nginx_error_log": "/var/log/nginx/error.log",
+                "nginx_keepalive_timeout": 65,
+                "nginx_log_level": "warn",
+                "nginx_service_enabled": true,
+                "nginx_service_state": "started",
+                "nginx_user": "www-data",
+                "nginx_version": "latest",
+                "nginx_worker_connections": 1024,
+                "nginx_worker_processes": 2,
+                "ntp_enabled": true,
+                "ntp_timezone": "{{ timezone }}",
+                "server_id": 1,
+                "ssh_port": 22,
+                "ssl_certificate_key_path": "/etc/ssl/private/nginx.key",
+                "ssl_certificate_path": "/etc/ssl/certs/nginx.crt",
+                "ssl_enabled": false,
+                "system_packages": [
+                    "curl",
+                    "wget",
+                    "unzip",
+                    "vim",
+                    "htop",
+                    "tree"
+                ],
+                "timezone": "America/Lima",
+                "virtual_hosts": [
+                    {
+                        "document_root": "{{ document_root }}",
+                        "index_files": "index.html index.htm",
+                        "name": "default",
+                        "server_name": "{{ ansible_default_ipv4.address }}"
+                    },
+                    {
+                        "document_root": "/var/www/empresa",
+                        "index_files": "index.html",
+                        "name": "empresa",
+                        "server_name": "empresa.local"
+                    }
+                ],
+                "website_title": "Servidor Nginx - {{ environment_name }}"
+            },
+            "web2": {
+                "admin_email": "admin@empresa.com",
+                "admin_users": [
+                    {
+                        "comment": "Usuario DevOps",
+                        "groups": "sudo",
+                        "name": "devops",
+                        "shell": "/bin/bash"
+                    }
+                ],
+                "ansible_host": "192.168.56.12",
+                "ansible_user": "ansible",
+                "company_name": "SFI Networks",
+                "deployment_date": "{{ ansible_date_time.date }}",
+                "document_root": "/var/www/html",
+                "environment_name": "laboratorio",
+                "firewall_enabled": true,
+                "http_port": 80,
+                "https_port": 443,
+                "log_retention_days": 30,
+                "nginx_access_log": "/var/log/nginx/access.log",
+                "nginx_client_max_body_size": "10M",
+                "nginx_error_log": "/var/log/nginx/error.log",
+                "nginx_keepalive_timeout": 65,
+                "nginx_log_level": "warn",
+                "nginx_service_enabled": true,
+                "nginx_service_state": "started",
+                "nginx_user": "www-data",
+                "nginx_version": "latest",
+                "nginx_worker_connections": 1024,
+                "nginx_worker_processes": 4,
+                "ntp_enabled": true,
+                "ntp_timezone": "{{ timezone }}",
+                "server_id": 2,
+                "ssh_port": 22,
+                "ssl_certificate_key_path": "/etc/ssl/private/nginx.key",
+                "ssl_certificate_path": "/etc/ssl/certs/nginx.crt",
+                "ssl_enabled": false,
+                "system_packages": [
+                    "curl",
+                    "wget",
+                    "unzip",
+                    "vim",
+                    "htop",
+                    "tree"
+                ],
+                "timezone": "America/Lima",
+                "virtual_hosts": [
+                    {
+                        "document_root": "{{ document_root }}",
+                        "index_files": "index.html index.htm",
+                        "name": "default",
+                        "server_name": "{{ ansible_default_ipv4.address }}"
+                    },
+                    {
+                        "document_root": "/var/www/empresa",
+                        "index_files": "index.html",
+                        "name": "empresa",
+                        "server_name": "empresa.local"
+                    }
+                ],
+                "website_title": "Servidor Nginx - {{ environment_name }}"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "testing",
+            "ungrouped",
+            "webservers"
+        ]
+    },
+    "testing": {
+        "hosts": [
+            "web1"
+        ]
+    },
+    "webservers": {
+        "hosts": [
+            "web1",
+            "web2"
+        ]
+    }
+}
+2025-07-24 22:49:18,667 p=5356 u=ansible n=ansible | {
+    "admin_email": "admin@empresa.com",
+    "admin_users": [
+        {
+            "comment": "Usuario DevOps",
+            "groups": "sudo",
+            "name": "devops",
+            "shell": "/bin/bash"
+        }
+    ],
+    "ansible_host": "192.168.56.11",
+    "ansible_user": "ansible",
+    "company_name": "SFI Networks",
+    "deployment_date": "{{ ansible_date_time.date }}",
+    "document_root": "/var/www/html",
+    "environment_name": "laboratorio",
+    "firewall_enabled": true,
+    "http_port": 80,
+    "https_port": 443,
+    "log_retention_days": 30,
+    "nginx_access_log": "/var/log/nginx/access.log",
+    "nginx_client_max_body_size": "10M",
+    "nginx_error_log": "/var/log/nginx/error.log",
+    "nginx_keepalive_timeout": 65,
+    "nginx_log_level": "warn",
+    "nginx_service_enabled": true,
+    "nginx_service_state": "started",
+    "nginx_user": "www-data",
+    "nginx_version": "latest",
+    "nginx_worker_connections": 1024,
+    "nginx_worker_processes": 2,
+    "ntp_enabled": true,
+    "ntp_timezone": "{{ timezone }}",
+    "server_id": 1,
+    "ssh_port": 22,
+    "ssl_certificate_key_path": "/etc/ssl/private/nginx.key",
+    "ssl_certificate_path": "/etc/ssl/certs/nginx.crt",
+    "ssl_enabled": false,
+    "system_packages": [
+        "curl",
+        "wget",
+        "unzip",
+        "vim",
+        "htop",
+        "tree"
+    ],
+    "timezone": "America/Lima",
+    "virtual_hosts": [
+        {
+            "document_root": "{{ document_root }}",
+            "index_files": "index.html index.htm",
+            "name": "default",
+            "server_name": "{{ ansible_default_ipv4.address }}"
+        },
+        {
+            "document_root": "/var/www/empresa",
+            "index_files": "index.html",
+            "name": "empresa",
+            "server_name": "empresa.local"
+        }
+    ],
+    "website_title": "Servidor Nginx - {{ environment_name }}"
+}
+2025-07-24 22:49:43,434 p=5360 u=ansible n=ansible | PLAY [INSTALACIÓN: Nginx y dependencias del sistema] **************************************************************
+2025-07-24 22:49:43,458 p=5360 u=ansible n=ansible | TASK [Gathering Facts] ********************************************************************************************
+2025-07-24 22:49:47,888 p=5360 u=ansible n=ansible | ok: [web1]
+2025-07-24 22:49:48,020 p=5360 u=ansible n=ansible | ok: [web2]
+2025-07-24 22:49:48,037 p=5360 u=ansible n=ansible | TASK [Reporte: Mostrar resumen final] *****************************************************************************
+2025-07-24 22:49:48,178 p=5360 u=ansible n=ansible | ok: [web1] => {
+    "msg": "=====================================\nLABORATORIO COMPLETADO\n=====================================\nInstalación: EXITOSA\nConfiguración: EXITOSA  \nVerificación: EXITOSA\n\nServidores configurados: 2\nURLs disponibles:\n- http://10.0.2.15\n- http://10.0.2.15\n\nPróximos pasos:\n1. Acceder a las URLs para verificar\n2. Revisar logs en /var/log/nginx/\n3. Experimentar con configuraciones\n=====================================\n"
+}
+2025-07-24 22:49:48,207 p=5360 u=ansible n=ansible | ok: [web2] => {
+    "msg": "=====================================\nLABORATORIO COMPLETADO\n=====================================\nInstalación: EXITOSA\nConfiguración: EXITOSA  \nVerificación: EXITOSA\n\nServidores configurados: 2\nURLs disponibles:\n- http://10.0.2.15\n- http://10.0.2.15\n\nPróximos pasos:\n1. Acceder a las URLs para verificar\n2. Revisar logs en /var/log/nginx/\n3. Experimentar con configuraciones\n=====================================\n"
+}
+2025-07-24 22:49:48,295 p=5360 u=ansible n=ansible | PLAY RECAP ********************************************************************************************************
+2025-07-24 22:49:48,298 p=5360 u=ansible n=ansible | web1                       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-24 22:49:48,298 p=5360 u=ansible n=ansible | web2                       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-24 22:50:35,544 p=5388 u=ansible n=ansible | ERROR! Empty playbook, nothing to do
