@@ -1,0 +1,13 @@
+---
+# tasks file for roles
+- name: Crear inventario dinámico
+  add_host:
+    name: "{{ item.name }}"
+    groups: "{{ item.group }}"
+    ansible_host: "{{ item.ip }}"
+    ansible_user: "{{ ssh_user }}"
+    ansible_ssh_private_key_file: "{{ ssh_key }}"
+  loop:
+    - { name: "db-server", group: "database", ip: "52.188.81.6" }
+    - { name: "api-server-1", group: "backend", ip: "52.188.81.6" }
+    - { name: "web-server-1", group: "frontend", ip: "52.188.81.6" }
