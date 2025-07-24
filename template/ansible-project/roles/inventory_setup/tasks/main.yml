@@ -6,8 +6,8 @@
     groups: "{{ item.group }}"
     ansible_host: "{{ item.ip }}"
     ansible_user: "{{ ssh_user }}"
-    ansible_ssh_private_key_file: "{{ ssh_key }}"
+    #ansible_ssh_private_key_file: "{{ ssh_key }}"
   loop:
-    - { name: "db-server", group: "database", ip: "52.188.81.6" }
-    - { name: "api-server-1", group: "backend", ip: "52.188.81.6" }
-    - { name: "web-server-1", group: "frontend", ip: "52.188.81.6" }
+    - { name: "db-server", group: "database", ip: "192.168.56.11" }
+    - { name: "api-server-1", group: "backend", ip: "192.168.56.11" }
+    - { name: "web-server-1", group: "frontend", ip: "192.168.56.12" }
