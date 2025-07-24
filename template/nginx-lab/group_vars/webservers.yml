@@ -1,0 +1,39 @@
+# group_vars/webservers.yml - Variables específicas para servidores web
+
+# CONFIGURACIÓN DE NGINX
+nginx_version: "latest"                    
+nginx_service_enabled: true               
+nginx_service_state: "started"            
+
+# CONFIGURACIÓN DE PERFORMANCE
+nginx_worker_connections: 1024            
+nginx_keepalive_timeout: 65               
+nginx_client_max_body_size: "10M"         
+
+# CONFIGURACIÓN DE LOGGING
+nginx_access_log: "/var/log/nginx/access.log"
+nginx_error_log: "/var/log/nginx/error.log"
+nginx_log_level: "warn"                   
+
+# CONFIGURACIÓN SSL (para futuras implementaciones)
+ssl_enabled: false                        
+ssl_certificate_path: "/etc/ssl/certs/nginx.crt"
+ssl_certificate_key_path: "/etc/ssl/private/nginx.key"
+
+# CONFIGURACIÓN DE VIRTUAL HOSTS
+virtual_hosts:
+  - name: "default"
+    server_name: "{{ ansible_default_ipv4.address }}"
+    document_root: "{{ document_root }}"
+    index_files: "index.html index.htm"
+    
+  - name: "empresa"
+    server_name: "empresa.local"
+    document_root: "/var/www/empresa"
+    index_files: "index.html"
+
+# CONFIGURACIÓN DE CONTENIDO WEB
+website_title: "Servidor Nginx - {{ environment_name }}"
+company_name: "SFI Networks"
+deployment_date: "{{ ansible_date_time.date }}"
+

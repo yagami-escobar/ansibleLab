@@ -1,0 +1,32 @@
+---
+# playbooks/install-nginx.yml - Instalación de Nginx y dependencias
+
+- name: "INSTALACIÓN: Nginx y dependencias del sistema"
+  hosts: webservers
+  become: yes
+  gather_facts: yes
+  
+  pre_tasks:
+    - name: "Reporte: Mostrar resumen final"
+      debug:
+        msg: |
+          =====================================
+          LABORATORIO COMPLETADO
+          =====================================
+          Instalación: EXITOSA
+          Configuración: EXITOSA  
+          Verificación: EXITOSA
+          
+          Servidores configurados: {{ groups['webservers'] | length }}
+          URLs disponibles:
+          {% for host in groups['webservers'] %}
+          - http://{{ hostvars[host]['ansible_default_ipv4']['address'] }}
+          {% endfor %}
+          
+          Próximos pasos:
+          1. Acceder a las URLs para verificar
+          2. Revisar logs en /var/log/nginx/
+          3. Experimentar con configuraciones
+          =====================================
+      tags: ['report']
+

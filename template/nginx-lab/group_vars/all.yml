@@ -1,0 +1,29 @@
+# group_vars/all.yml - Variables aplicables a todos los hosts
+
+# CONFIGURACIÓN GENERAL DEL SISTEMA
+system_packages:
+  - curl
+  - wget
+  - unzip
+  - vim
+  - htop
+  - tree
+
+# CONFIGURACIÓN DE TIMEZONE
+ntp_enabled: true
+ntp_timezone: "{{ timezone }}"
+
+# CONFIGURACIÓN DE USUARIOS
+admin_users:
+  - name: "devops"
+    comment: "Usuario DevOps"
+    groups: "sudo"
+    shell: "/bin/bash"
+
+# CONFIGURACIÓN DE SEGURIDAD
+firewall_enabled: true
+ssh_port: 22
+
+# CONFIGURACIÓN DE MONITOREO
+log_retention_days: 30
+

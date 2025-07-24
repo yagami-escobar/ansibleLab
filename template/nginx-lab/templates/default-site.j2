@@ -1,0 +1,71 @@
+Crea el archivo templates/default-site.j2:
+# templates/default-site.j2 - Configuración del sitio por defecto
+
+{% for vhost in virtual_hosts %}
+# VIRTUAL HOST: {{ vhost.name }}
+server {
+    listen {{ http_port }};
+    {% if vhost.name != 'default' %}
+    server_name {{ vhost.server_name }};
+    {% else %}
+    server_name {{ vhost.server_name }} localhost;
+    {% endif %}
+    
+    root {{ vhost.document_root }};
+    index {{ vhost.index_files }};
+    
+    # CONFIGURACIÓN DE LOGS ESPECÍFICOS
+    access_log /var/log/nginx/{{ vhost.name }}_access.log main;
+    error_log /var/log/nginx/{{ vhost.name }}_error.log {{ nginx_log_level }};
+    
+    # CONFIGURACIÓN DE UBICACIONES
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    
+    # MANEJAR ARCHIVOS ESTÁTICOS
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    # OCULTAR INFORMACIÓN SENSIBLE
+    location ~ /\.ht {
+        deny all;
+    }
+    
+    # PÁGINA DE ERROR PERSONALIZADA
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+    
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+    
+    {% if ssl_enabled %}
+    # REDIRECCIÓN SSL (si está habilitado)
+    return 301 https://$server_name$request_uri;
+    {% endif %}
+}
+
+{% if ssl_enabled %}
+# CONFIGURACIÓN HTTPS
+server {
+    listen {{ https_port }} ssl http2;
+    server_name {{ vhost.server_name }};
+    
+    root {{ vhost.document_root }};
+    index {{ vhost.index_files }};
+    
+    ssl_certificate {{ ssl_certificate_path }};
+    ssl_certificate_key {{ ssl_certificate_key_path }};
+    
+    # Resto de configuración igual que HTTP
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+{% endif %}
+
+{% endfor %}
+

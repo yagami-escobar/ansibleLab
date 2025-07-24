@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ website_title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .info-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #FFD700;
+        }
+        .status {
+            background: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ website_title }}</h1>
+        
+        <div class="status">
+            Nginx configurado exitosamente
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Servidor</h3>
+                <p>{{ ansible_hostname }}</p>
+                <p>{{ ansible_default_ipv4.address }}</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>Sistema</h3>
+                <p>{{ ansible_distribution }} {{ ansible_distribution_version }}</p>
+                <p>{{ ansible_architecture }}</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>Nginx</h3>
+                <p>Workers: {{ nginx_worker_processes }}</p>
+                <p>Conexiones: {{ nginx_worker_connections }}</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>Red</h3>
+                <p>HTTP: {{ http_port }}</p>
+                <p>HTTPS: {{ https_port }}</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>{{ company_name }}</strong></p>
+            <p>Desplegado: {{ deployment_date }} | Entorno: {{ environment_name }}</p>
+            <p>Administrador: {{ admin_email }}</p>
+        </div>
+    </div>
+</body>
+</html>
+

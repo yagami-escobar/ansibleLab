@@ -1,0 +1,67 @@
+# templates/nginx.conf.j2 - Configuración principal de Nginx
+# Generado automáticamente por Ansible - NO EDITAR MANUALMENTE
+
+user {{ nginx_user }};
+worker_processes {{ nginx_worker_processes | default(ansible_processor_cores) }};
+pid /run/nginx.pid;
+
+# CONFIGURACIÓN DE EVENTOS
+events {
+    worker_connections {{ nginx_worker_connections }};
+    use epoll;                             
+    multi_accept on;                       
+}
+
+# CONFIGURACIÓN HTTP
+http {
+    # CONFIGURACIÓN BÁSICA
+    sendfile on;                           
+    tcp_nopush on;                         
+    tcp_nodelay on;                        
+    keepalive_timeout {{ nginx_keepalive_timeout }};
+    types_hash_max_size 2048;              
+    
+    # CONFIGURACIÓN DE TAMAÑOS
+    client_max_body_size {{ nginx_client_max_body_size }};
+    client_body_buffer_size 128k;
+    client_header_buffer_size 1k;
+    large_client_header_buffers 4 4k;
+    
+    # TIPOS MIME
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    # CONFIGURACIÓN DE LOGGING
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+                    
+    access_log {{ nginx_access_log }} main;
+    error_log {{ nginx_error_log }} {{ nginx_log_level }};
+    
+    # CONFIGURACIÓN DE COMPRESIÓN
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        text/javascript
+        application/javascript
+        application/xml+rss
+        application/json;
+    
+    {% if ssl_enabled %}
+    # CONFIGURACIÓN SSL
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512;
+    {% endif %}
+    
+    # INCLUIR CONFIGURACIONES ADICIONALES
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+
