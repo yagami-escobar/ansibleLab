@@ -1,53 +1,80 @@
----
-# tasks file for roles
 - name: Instalar MySQL Server
   apt:
     name: mysql-server
     state: present
     update_cache: true
 
+- name: Crear directorio del socket de MySQL
+  file:
+    path: /var/run/mysqld
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: '0755'
+
+- name: Establecer configuración fija de MySQL
+  copy:
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    content: |
+      [mysqld]
+      user            = mysql
+      pid-file        = /var/run/mysqld/mysqld.pid
+      socket          = /var/run/mysqld/mysqld.sock
+      port            = 3306
+      datadir         = /var/lib/mysql
+      bind-address    = 0.0.0.0
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reiniciar MySQL
+
 - name: Asegurar que MySQL está activo
+  shell: |
+    /etc/init.d/mysql start
+  args:
+    executable: /bin/bash
+  when: ansible_virtualization_type == "docker"
+
+- name: Asegurar que MySQL está activo (systemd)
   service:
     name: mysql
     state: started
     enabled: true
+  when: ansible_virtualization_type != "docker"
 
-- name: Establecer contraseña de root (si es necesario)
-  shell: |
-    mysql -u root <<EOF
-    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ mysql_root_password }}';
-    FLUSH PRIVILEGES;
-    EOF
-  args:
-    executable: /bin/bash
+- name: Esperar que MySQL escuche en el puerto 3306
+  wait_for:
+    port: 3306
+    host: 127.0.0.1
+    state: started
+    timeout: 30
+
+- name: Establecer contraseña del usuario root
+  community.mysql.mysql_user:
+    name: root
+    host: localhost
+    password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    check_implicit_admin: yes
 
 - name: Crear base de datos
-  shell: |
-    mysql -u root -p{{ mysql_root_password }} -e "CREATE DATABASE IF NOT EXISTS {{ db_name }};"
-  args:
-    executable: /bin/bash
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_host: 127.0.0.1
 
 - name: Crear usuario externo y asignar permisos
-  shell: |
-    mysql -u root -p{{ mysql_root_password }} <<EOF
-    CREATE USER IF NOT EXISTS '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_user_password }}';
-    GRANT ALL PRIVILEGES ON {{ db_name }}.* TO '{{ db_user }}'@'%';
-    FLUSH PRIVILEGES;
-    EOF
-  args:
-    executable: /bin/bash
-
-- name: Permitir conexiones externas (bind-address = 0.0.0.0)
-  lineinfile:
-    path: /etc/mysql/mysql.conf.d/mysqld.cnf
-    regexp: '^bind-address'
-    line: "bind-address = 0.0.0.0"
-    backup: yes
-
-- name: Reiniciar MySQL
-  service:
-    name: mysql
-    state: restarted
+  community.mysql.mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_user_password }}"
+    priv: "{{ db_name }}.*:ALL"
+    host: "%"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_host: 127.0.0.1
 
 - name: Subir archivo de migración
   copy:
@@ -57,15 +84,17 @@
 - name: Cargar migraciones
   shell: |
     mysql -u {{ db_user }} -p'{{ db_user_password }}' {{ db_name }} < /tmp/migrations.sql
+  args:
+    executable: /bin/bash
 
 - name: Verificar integridad de datos
   community.mysql.mysql_query:
     login_user: "root"
     login_password: "{{ mysql_root_password }}"
+    login_host: 127.0.0.1
     query: "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{{ db_name }}';"
   register: table_count
 
 - name: Mostrar resultado de carga SQL
   debug:
     var: table_count
-

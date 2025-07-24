@@ -1,12 +1,17 @@
----
-# tasks file for roles
-- name: Instalar Node.js y npm
-  apt:
-    name:
-      - nodejs
-      - npm
-    state: present
-    update_cache: yes
+- name: Instalar Node.js 20.x desde NodeSource
+  become: true
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    apt-get install -y nodejs
+  args:
+    executable: /bin/bash
+
+- name: Verificar versión de Node.js
+  command: node --version
+  register: node_version
+
+- debug:
+    msg: "Node.js version is {{ node_version.stdout }}"
 
 - name: Clonar json-server desde GitHub
   git:
@@ -14,10 +19,10 @@
     dest: "/opt/api-server"
     version: "{{ app_version }}"
 
-- name: Instalar dependencias
-  npm:
-    path: "/opt/api-server"
-    state: present
+# - name: Instalar dependencias
+#   npm:
+#     path: "/opt/api-server"
+#     state: present
 
 - name: Crear archivo de datos JSON
   copy:
@@ -66,4 +71,3 @@
   until: result_uri.status == 200
   retries: 5
   delay: 10
-

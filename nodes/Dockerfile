@@ -2,7 +2,8 @@ FROM ubuntu:22.04
 
 # Install Pkgs
 RUN apt-get update && \
-    apt-get install -y openssh-server vim sudo curl iputils-ping net-tools iproute2 tree python3 python3-pip python3-apt && \
+    apt-get install -y openssh-server vim sudo curl iputils-ping net-tools iproute2 tree python3 python3-pip python3-apt nodejs npm && \
+    pip3 install pymysql && \
     apt-get clean
 
 # User, Config

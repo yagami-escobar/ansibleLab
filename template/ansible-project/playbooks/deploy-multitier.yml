@@ -12,17 +12,23 @@
         name: "{{ item.name }}"
         groups: "{{ item.group }}"
         ansible_host: "{{ item.ip }}"
+        ansible_user: ansible
+        ansible_password: ansible
+        ansible_connection: ssh
       loop:
-        - { name: "db-server", group: "database", ip: "10.0.1.10" }
-        - { name: "api-server-1", group: "backend", ip: "10.0.1.20" }
-        - { name: "api-server-2", group: "backend", ip: "10.0.1.21" }
-        - { name: "web-server-1", group: "frontend", ip: "10.0.1.30" }
-        - { name: "web-server-2", group: "frontend", ip: "10.0.1.31" }
+        - { name: "db-server", group: "database", ip: "node1" }
+        - { name: "api-server-1", group: "backend", ip: "node2" }
+        - { name: "api-server-2", group: "backend", ip: "node3" }
+        - { name: "web-server-1", group: "frontend", ip: "node4" }
+        - { name: "web-server-2", group: "frontend", ip: "node5" }
 
 # Fase 1: Preparación de Base de Datos
 - name: Configurar Base de Datos
   hosts: database
   serial: 1
+  vars:
+    app_version: "v1.2.3"
+    db_name: "ecommerce_db"
   tasks:
     - name: Instalar MySQL
       package:

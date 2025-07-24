@@ -5,6 +5,7 @@
     app_version: "main"
     db_name: "ecommerce_db"
     ssh_user: "ansible"
+    ssh_password: "ansible"
     #ssh_key: "/home/ansible/.ssh/id_rsa.pub"
   roles:
     - inventory_setup
